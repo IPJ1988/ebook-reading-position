@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':reading-position'
 rootProject.name='Hytexts_Reading_Position'
