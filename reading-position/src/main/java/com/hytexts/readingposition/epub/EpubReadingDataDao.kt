@@ -1,13 +1,27 @@
 package com.hytexts.readingposition.epub
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
+import androidx.room.*
 
 @Dao
 interface EpubReadingDataDao {
 
+    @Suppress("unused")
+    @Query("SELECT * FROM EpubReadingDataEntity")
+    suspend fun getAllEpubReadingData(): List<EpubReadingDataEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun add(data: EpubReadingDataEntity)
+    suspend fun insert(item: EpubReadingDataEntity)
+
+    @Update
+    suspend fun update(item: EpubReadingDataEntity)
+
+    @Delete
+    suspend fun delete(item: EpubReadingDataEntity)
+
+    @Query("DELETE FROM EpubReadingDataEntity")
+    suspend fun deleteTable()
+
+    @Query("SELECT * FROM EpubReadingDataEntity WHERE book_id = :bookId ")
+    suspend fun findEpubReadingDataEntityByBookId(bookId: String): EpubReadingDataEntity?
 
 }

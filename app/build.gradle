@@ -33,6 +33,4 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':reading-position')
-
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
 }

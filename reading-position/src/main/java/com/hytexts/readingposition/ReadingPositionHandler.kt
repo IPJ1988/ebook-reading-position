@@ -15,6 +15,16 @@ class ReadingPositionHandler {
         private lateinit var epubReadingDataVm: EpubReadingDataViewModel
         private lateinit var pdfReadingDataVm: PdfReadingDataViewModel
 
+        fun getEpubReadingData(
+            activity: AppCompatActivity,
+            bookId: String
+        ): EpubReadingDataEntity? {
+            initEpubVm(activity)
+            return runBlocking {
+                epubReadingDataVm.findEpubReadingDataEntityAsync(bookId).await()
+            }
+        }
+
         fun persistEpubReadingData(
             activity: AppCompatActivity,
             bookId: String,

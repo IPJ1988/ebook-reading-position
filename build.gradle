@@ -5,7 +5,6 @@ buildscript {
         kotlin_version = '1.3.61'
 
         /* androidx */
-        constraintlayout_version = '1.1.3'
         appcompat_version = '1.1.0'
         lifecycle_version = '2.1.0'
         room_version = '2.2.3'
