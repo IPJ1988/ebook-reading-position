@@ -3,10 +3,14 @@ package com.hytexts.readingposition
 import android.text.format.DateUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
+import androidx.room.withTransaction
 import com.hytexts.readingposition.epub.EpubReadingDataEntity
 import com.hytexts.readingposition.epub.EpubReadingDataViewModel
 import com.hytexts.readingposition.pdf.PdfReadingDataEntity
 import com.hytexts.readingposition.pdf.PdfReadingDataViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class ReadingPositionHandler {
@@ -14,58 +18,6 @@ class ReadingPositionHandler {
     companion object {
         private lateinit var epubReadingDataVm: EpubReadingDataViewModel
         private lateinit var pdfReadingDataVm: PdfReadingDataViewModel
-
-        fun getEpubReadingData(
-            activity: AppCompatActivity,
-            bookId: String
-        ): EpubReadingDataEntity? {
-            initEpubVm(activity)
-            return runBlocking {
-                epubReadingDataVm.findEpubReadingDataEntityAsync(bookId).await()
-            }
-        }
-
-        fun persistEpubReadingData(
-            activity: AppCompatActivity,
-            bookId: String,
-            fontName: String,
-            chapterIndex: Int,
-            chapterPosition: Float
-        ) {
-            initEpubVm(activity)
-            EpubReadingDataEntity(
-                bookId,
-                fontName,
-                chapterIndex,
-                chapterPosition,
-                System.currentTimeMillis() / DateUtils.SECOND_IN_MILLIS
-            ).apply {
-                runBlocking {
-                    epubReadingDataVm
-                        .insertEpubReadingDataEntityAsync(this@apply)
-                        .await()
-                }
-            }
-        }
-
-        fun persistPdfReadingData(
-            activity: AppCompatActivity,
-            bookId: String,
-            bookPosition: Float
-        ) {
-            initPdfVm(activity)
-            PdfReadingDataEntity(
-                bookId,
-                bookPosition,
-                System.currentTimeMillis() / DateUtils.SECOND_IN_MILLIS
-            ).apply {
-                runBlocking {
-                    pdfReadingDataVm
-                        .insertPdfReadingDataEntityAsync(this@apply)
-                        .await()
-                }
-            }
-        }
 
         private fun initEpubVm(activity: AppCompatActivity) {
             if (!this::epubReadingDataVm.isInitialized) {
@@ -88,6 +40,172 @@ class ReadingPositionHandler {
                             .of(activity, this)
                             .get(PdfReadingDataViewModel::class.java)
                     }
+            }
+        }
+
+        fun addEpubReadingData(
+            activity: AppCompatActivity,
+            bookId: String,
+            fontName: String,
+            chapterIndex: Int,
+            chapterPosition: Float
+        ) {
+            initEpubVm(activity)
+            EpubReadingDataEntity(
+                bookId,
+                fontName,
+                chapterIndex,
+                chapterPosition,
+                System.currentTimeMillis() / DateUtils.SECOND_IN_MILLIS
+            ).apply {
+                CoroutineScope(Dispatchers.IO).launch {
+                    epubReadingDataVm
+                        .insertEpubReadingDataEntityAsync(this@apply)
+                        .await()
+                }
+            }
+        }
+
+        fun addPdfReadingData(
+            activity: AppCompatActivity,
+            bookId: String,
+            bookPosition: Float
+        ) {
+            initPdfVm(activity)
+            PdfReadingDataEntity(
+                bookId,
+                bookPosition,
+                System.currentTimeMillis() / DateUtils.SECOND_IN_MILLIS
+            ).apply {
+                CoroutineScope(Dispatchers.IO).launch {
+                    pdfReadingDataVm
+                        .insertPdfReadingDataEntityAsync(this@apply)
+                        .await()
+                }
+            }
+        }
+
+        fun getAllEpubReadingData(activity: AppCompatActivity): List<EpubReadingDataEntity>? {
+            initEpubVm(activity)
+            return runBlocking {
+                epubReadingDataVm
+                    .findAllEpubReadingDataEntityAsync()
+                    .await()
+            }
+        }
+
+        fun getAllPdfReadingData(activity: AppCompatActivity): List<PdfReadingDataEntity>? {
+            initPdfVm(activity)
+            return runBlocking {
+                pdfReadingDataVm
+                    .findAllPdfReadingDataEntityAsync()
+                    .await()
+            }
+        }
+
+        fun getEpubReadingData(
+            activity: AppCompatActivity,
+            bookId: String
+        ): EpubReadingDataEntity? {
+            initEpubVm(activity)
+            return runBlocking {
+                epubReadingDataVm
+                    .findEpubReadingDataEntityAsync(bookId)
+                    .await()
+            }
+        }
+
+        fun getPdfReadingData(
+            activity: AppCompatActivity,
+            bookId: String
+        ): PdfReadingDataEntity? {
+            initEpubVm(activity)
+            return runBlocking {
+                pdfReadingDataVm
+                    .findPdfReadingDataEntityAsync(bookId)
+                    .await()
+            }
+        }
+
+        fun updateEpubReadingData(
+            activity: AppCompatActivity,
+            bookId: String,
+            fontName: String,
+            chapterIndex: Int,
+            chapterPosition: Float
+        ) {
+            initEpubVm(activity)
+            getEpubReadingData(activity, bookId)?.apply {
+                this.fontName = fontName
+                this.chapterIndex = chapterIndex
+                this.chapterPosition = chapterPosition
+                this.timestamp = System.currentTimeMillis() / DateUtils.SECOND_IN_MILLIS
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    epubReadingDataVm
+                        .updateEpubReadingDataEntityAsync(this@apply)
+                        .await()
+                }
+            }
+        }
+
+        fun updatePdfReadingData(
+            activity: AppCompatActivity,
+            bookId: String,
+            bookPosition: Float
+        ) {
+            initPdfVm(activity)
+            getPdfReadingData(activity, bookId)?.apply {
+                this.bookPosition = bookPosition
+                this.timestamp = System.currentTimeMillis() / DateUtils.SECOND_IN_MILLIS
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    pdfReadingDataVm
+                        .updatePdfReadingDataEntityAsync(this@apply)
+                        .await()
+                }
+            }
+        }
+
+        fun deleteEpubReadingData(
+            activity: AppCompatActivity,
+            bookId: String
+        ) {
+            initEpubVm(activity)
+            CoroutineScope(Dispatchers.IO).launch {
+                epubReadingDataVm
+                    .deleteEpubReadingDataEntityAsync(bookId)
+                    .await()
+            }
+        }
+
+        fun deletePdfReadingData(
+            activity: AppCompatActivity,
+            bookId: String
+        ) {
+            initPdfVm(activity)
+            CoroutineScope(Dispatchers.IO).launch {
+                pdfReadingDataVm
+                    .deletePdfReadingDataEntityAsync(bookId)
+                    .await()
+            }
+        }
+
+        fun clearEpubDatabase(activity: AppCompatActivity) {
+            initEpubVm(activity)
+            CoroutineScope(Dispatchers.IO).launch {
+                AppDatabase.getInstance(activity).withTransaction {
+                    epubReadingDataVm.clear()
+                }
+            }
+        }
+
+        fun clearPdfDatabase(activity: AppCompatActivity) {
+            initPdfVm(activity)
+            CoroutineScope(Dispatchers.IO).launch {
+                AppDatabase.getInstance(activity).withTransaction {
+                    pdfReadingDataVm.clear()
+                }
             }
         }
 

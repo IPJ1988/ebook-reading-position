@@ -1,10 +1,7 @@
 package com.hytexts.readingposition.epub
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.room.withTransaction
-import com.hytexts.readingposition.AppDatabase
 import com.hytexts.readingposition.BuildConfig
 import kotlinx.coroutines.*
 
@@ -35,23 +32,44 @@ class EpubReadingDataViewModel(private val dataSource: EpubReadingDataDao) : Vie
         }
     }
 
-    @Suppress("unused")
-    suspend fun deleteAll(context: Context) {
-        AppDatabase.getInstance(context).withTransaction {
-            dataSource.deleteTable()
-        }
-    }
-
-    @Suppress("unused")
-    fun deleteAllAsync(): Deferred<Boolean> {
+    fun updateEpubReadingDataEntityAsync(item: EpubReadingDataEntity): Deferred<Boolean> {
         return viewModelScope.async {
             try {
-                dataSource.deleteTable()
+                dataSource.update(item)
                 true
             } catch (e: Exception) {
                 Log.e(LOG_TAG, "-> ${e.message}")
                 if (BuildConfig.DEBUG) e.printStackTrace()
                 false
+            }
+        }
+    }
+
+    fun deleteEpubReadingDataEntityAsync(bookId: String): Deferred<Boolean> {
+        return viewModelScope.async {
+            try {
+                dataSource.delete(bookId)
+                true
+            } catch (e: Exception) {
+                Log.e(LOG_TAG, "-> ${e.message}")
+                if (BuildConfig.DEBUG) e.printStackTrace()
+                false
+            }
+        }
+    }
+
+    suspend fun clear() {
+        dataSource.deleteTable()
+    }
+
+    fun findAllEpubReadingDataEntityAsync(): Deferred<List<EpubReadingDataEntity>?> {
+        return viewModelScope.async {
+            try {
+                dataSource.getAllEpubReadingData()
+            } catch (e: Exception) {
+                Log.e(LOG_TAG, "-> ${e.message}")
+                if (BuildConfig.DEBUG) e.printStackTrace()
+                null
             }
         }
     }

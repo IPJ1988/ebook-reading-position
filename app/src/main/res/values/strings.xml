@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Hytexts_Reading_Position</string>
+    <string name="txt_insert">insert</string>
+    <string name="txt_update">update</string>
+    <string name="txt_delete">delete</string>
+    <string name="txt_find_all">find all</string>
+    <string name="txt_for_epub_reading_position">for EPUB reading position</string>
+    <string name="txt_for_pdf_reading_position">for PDF reading position</string>
+    <string name="txt_clear_all_data">clear all data</string>
 </resources>

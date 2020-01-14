@@ -5,7 +5,6 @@ import androidx.room.*
 @Dao
 interface EpubReadingDataDao {
 
-    @Suppress("unused")
     @Query("SELECT * FROM EpubReadingDataEntity")
     suspend fun getAllEpubReadingData(): List<EpubReadingDataEntity>
 
@@ -17,6 +16,9 @@ interface EpubReadingDataDao {
 
     @Delete
     suspend fun delete(item: EpubReadingDataEntity)
+
+    @Query("DELETE FROM EpubReadingDataEntity WHERE book_id = :bookId")
+    suspend fun delete(bookId: String)
 
     @Query("DELETE FROM EpubReadingDataEntity")
     suspend fun deleteTable()

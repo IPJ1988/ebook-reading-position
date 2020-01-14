@@ -3,85 +3,115 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:baselineAligned="false"
+    android:orientation="vertical"
     android:paddingTop="32dp"
-    tools:context=".MainActivity"
-    android:baselineAligned="false">
+    tools:context=".MainActivity">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnInsertEpub"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="insert"
-            android:textColor="#f36754" />
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnUpdateEpub"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="update"
-            android:textColor="#f36754" />
+            <Button
+                android:id="@+id/btnInsertEpub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_insert"
+                android:textColor="#f36754" />
 
-        <Button
-            android:id="@+id/btnClearEpub"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="delete"
-            android:textColor="#f36754" />
+            <Button
+                android:id="@+id/btnUpdateEpub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_update"
+                android:textColor="#f36754" />
 
-        <TextView
-            android:layout_width="match_parent"
+            <Button
+                android:id="@+id/btnClearEpub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_delete"
+                android:textColor="#f36754" />
+
+            <Button
+                android:id="@+id/btnFindAllEpub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_find_all"
+                android:textColor="#f36754" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/txt_for_epub_reading_position"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="for EPUB reading position"
-            android:textSize="20sp" />
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:text="@string/txt_for_pdf_reading_position"
+                android:textColor="#222"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btnInsertPdf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_insert"
+                android:textColor="#457f36" />
+
+            <Button
+                android:id="@+id/btnUpdatePdf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_update"
+                android:textColor="#457f36" />
+
+            <Button
+                android:id="@+id/btnClearPdf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_delete"
+                android:textColor="#457f36" />
+
+            <Button
+                android:id="@+id/btnFindAllPdf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_find_all"
+                android:textColor="#457f36" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="0dp"
+    <Button
+        android:id="@+id/btnClearDatabase"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            android:text="for PDF reading position"
-            android:textColor="#222"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/btnInsertPdf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="insert"
-            android:textColor="#457f36" />
-
-        <Button
-            android:id="@+id/btnUpdatePdf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="update"
-            android:textColor="#457f36" />
-
-        <Button
-            android:id="@+id/btnClearPdf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="delete"
-            android:textColor="#457f36" />
-
-    </LinearLayout>
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:text="@string/txt_clear_all_data" />
 
 </LinearLayout>
