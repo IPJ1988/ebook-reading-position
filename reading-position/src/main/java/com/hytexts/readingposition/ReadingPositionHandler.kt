@@ -125,7 +125,7 @@ class ReadingPositionHandler {
             activity: AppCompatActivity,
             bookId: String
         ): PdfReadingDataEntity? {
-            initEpubVm(activity)
+            initPdfVm(activity)
             return runBlocking {
                 pdfReadingDataVm
                     .findPdfReadingDataEntityAsync(bookId)
