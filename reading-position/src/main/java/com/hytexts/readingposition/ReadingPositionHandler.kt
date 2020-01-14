@@ -43,6 +43,7 @@ class ReadingPositionHandler {
             }
         }
 
+        @JvmStatic
         fun addEpubReadingData(
             activity: AppCompatActivity,
             bookId: String,
@@ -66,6 +67,7 @@ class ReadingPositionHandler {
             }
         }
 
+        @JvmStatic
         fun addPdfReadingData(
             activity: AppCompatActivity,
             bookId: String,
@@ -85,6 +87,7 @@ class ReadingPositionHandler {
             }
         }
 
+        @JvmStatic
         fun getAllEpubReadingData(activity: AppCompatActivity): List<EpubReadingDataEntity>? {
             initEpubVm(activity)
             return runBlocking {
@@ -94,6 +97,7 @@ class ReadingPositionHandler {
             }
         }
 
+        @JvmStatic
         fun getAllPdfReadingData(activity: AppCompatActivity): List<PdfReadingDataEntity>? {
             initPdfVm(activity)
             return runBlocking {
@@ -103,6 +107,7 @@ class ReadingPositionHandler {
             }
         }
 
+        @JvmStatic
         fun getEpubReadingData(
             activity: AppCompatActivity,
             bookId: String
@@ -115,6 +120,7 @@ class ReadingPositionHandler {
             }
         }
 
+        @JvmStatic
         fun getPdfReadingData(
             activity: AppCompatActivity,
             bookId: String
@@ -127,6 +133,7 @@ class ReadingPositionHandler {
             }
         }
 
+        @JvmStatic
         fun updateEpubReadingData(
             activity: AppCompatActivity,
             bookId: String,
@@ -149,6 +156,7 @@ class ReadingPositionHandler {
             }
         }
 
+        @JvmStatic
         fun updatePdfReadingData(
             activity: AppCompatActivity,
             bookId: String,
@@ -167,6 +175,7 @@ class ReadingPositionHandler {
             }
         }
 
+        @JvmStatic
         fun deleteEpubReadingData(
             activity: AppCompatActivity,
             bookId: String
@@ -179,6 +188,7 @@ class ReadingPositionHandler {
             }
         }
 
+        @JvmStatic
         fun deletePdfReadingData(
             activity: AppCompatActivity,
             bookId: String
@@ -191,6 +201,7 @@ class ReadingPositionHandler {
             }
         }
 
+        @JvmStatic
         fun clearEpubDatabase(activity: AppCompatActivity) {
             initEpubVm(activity)
             CoroutineScope(Dispatchers.IO).launch {
@@ -200,6 +211,7 @@ class ReadingPositionHandler {
             }
         }
 
+        @JvmStatic
         fun clearPdfDatabase(activity: AppCompatActivity) {
             initPdfVm(activity)
             CoroutineScope(Dispatchers.IO).launch {
