@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.hytexts.readingposition.ReadingPositionHandler
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.runBlocking
 import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity() {
@@ -29,30 +30,27 @@ class MainActivity : AppCompatActivity() {
         btnClearDatabase?.setOnClickListener { clearDatabase() }
     }
 
-    private fun insertEpubItem() {
-        ReadingPositionHandler.addEpubReadingData(
-            this,
-            "1234-5678-90",
-            "menlo",
-            2,
-            .32f
-        )
+    private fun insertEpubItem() = runBlocking {
+        ReadingPositionHandler(this@MainActivity)
+            .addEpubReadingData(
+                "1234-5678-90",
+                "menlo",
+                2,
+                .32f
+            )
         getEpubItem()
     }
 
-    private fun insertPdfItem() {
-        ReadingPositionHandler.addPdfReadingData(
-            this,
-            "0011-1234-00",
-            .34f
-        )
+    private fun insertPdfItem() = runBlocking {
+        ReadingPositionHandler(this@MainActivity)
+            .addPdfReadingData("0011-1234-00", .34f)
         getPdfItem()
     }
 
-    private fun getEpubItem(bookId: String = "1234-5678") {
-        val item = ReadingPositionHandler.getEpubReadingData(this, bookId)
+    private fun getEpubItem(bookId: String = "1234-5678-90") = runBlocking {
+        val item = ReadingPositionHandler(this@MainActivity).getEpubReadingData(bookId)
         Toast.makeText(
-            this,
+            this@MainActivity,
             """
                 |font name: ${item?.fontName}
                 |chapter index: ${item?.chapterIndex}
@@ -62,19 +60,18 @@ class MainActivity : AppCompatActivity() {
         ).show()
     }
 
-    private fun getPdfItem(bookId: String = "0011-1234") {
-        val item = ReadingPositionHandler.getPdfReadingData(this, bookId)
+    private fun getPdfItem(bookId: String = "0011-1234-00") = runBlocking {
+        val item = ReadingPositionHandler(this@MainActivity).getPdfReadingData(bookId)
         Toast.makeText(
-            this,
+            this@MainActivity,
             "book progress: ${item?.bookPosition}",
             Toast.LENGTH_LONG
         ).show()
     }
 
-    private fun updateEpubItem() {
-        ReadingPositionHandler.updateEpubReadingData(
-            this,
-            "1234-5678",
+    private fun updateEpubItem() = runBlocking {
+        ReadingPositionHandler(this@MainActivity).updateEpubReadingData(
+            "1234-5678-90",
             "update font",
             2,
             .32f
@@ -82,60 +79,55 @@ class MainActivity : AppCompatActivity() {
         getEpubItem()
     }
 
-    private fun updatePdfItem() {
-        ReadingPositionHandler.updatePdfReadingData(
-            this,
-            "0011-1234",
-            .53f
-        )
+    private fun updatePdfItem() = runBlocking {
+        ReadingPositionHandler(this@MainActivity)
+            .updatePdfReadingData("0011-1234-00", .53f)
+        getPdfItem()
+    }
+
+    private fun deleteEpubItem() = runBlocking {
+        ReadingPositionHandler(this@MainActivity)
+            .deleteEpubReadingData("1234-5678-90")
         getEpubItem()
     }
 
-    private fun deleteEpubItem() {
-        ReadingPositionHandler.deleteEpubReadingData(
-            this,
-            "1234-5678"
-        )
-        getEpubItem()
+    private fun deletePdfItem() = runBlocking {
+        ReadingPositionHandler(this@MainActivity)
+            .deletePdfReadingData("0011-1234-00")
+        getPdfItem()
     }
 
-    private fun deletePdfItem() {
-        ReadingPositionHandler.deletePdfReadingData(
-            this,
-            "0011-1234"
-        )
-        getEpubItem()
-    }
-
-    private fun findAllEpubItems() {
+    private fun findAllEpubItems() = runBlocking {
         val builder = StringBuilder()
-        ReadingPositionHandler
-            .getAllEpubReadingData(this)
+        ReadingPositionHandler(this@MainActivity)
+            .getAllEpubReadingData()
             ?.forEach { builder.append(it).append("\n") }
 
         Toast.makeText(
-            this,
+            this@MainActivity,
             builder.toString(),
             Toast.LENGTH_LONG
         ).show()
     }
 
-    private fun findAllPdfItems() {
+    private fun findAllPdfItems() = runBlocking {
         val builder = StringBuilder()
-        ReadingPositionHandler
-            .getAllPdfReadingData(this)
+        ReadingPositionHandler(this@MainActivity)
+            .getAllPdfReadingData()
             ?.forEach { builder.append(it).append("\n") }
 
         Toast.makeText(
-            this,
+            this@MainActivity,
             builder.toString(),
             Toast.LENGTH_LONG
         ).show()
     }
 
     private fun clearDatabase() {
-        ReadingPositionHandler.clearEpubDatabase(this)
-        ReadingPositionHandler.clearPdfDatabase(this)
+        ReadingPositionHandler(this).apply {
+            clearEpubDatabase()
+            clearPdfDatabase()
+        }
     }
 
 }

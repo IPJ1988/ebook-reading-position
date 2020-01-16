@@ -2,7 +2,6 @@ package com.hytexts.readingposition.pdf
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.hytexts.readingposition.BuildConfig
 import kotlinx.coroutines.*
 
 class PdfReadingDataViewModel(private val dataSource: PdfReadingDataDao) : ViewModel() {
@@ -26,7 +25,7 @@ class PdfReadingDataViewModel(private val dataSource: PdfReadingDataDao) : ViewM
                 true
             } catch (e: Exception) {
                 Log.e(LOG_TAG, "-> ${e.message}")
-                if (BuildConfig.DEBUG) e.printStackTrace()
+                e.printStackTrace()
                 false
             }
         }
@@ -39,7 +38,7 @@ class PdfReadingDataViewModel(private val dataSource: PdfReadingDataDao) : ViewM
                 true
             } catch (e: Exception) {
                 Log.e(LOG_TAG, "-> ${e.message}")
-                if (BuildConfig.DEBUG) e.printStackTrace()
+                e.printStackTrace()
                 false
             }
         }
@@ -52,7 +51,7 @@ class PdfReadingDataViewModel(private val dataSource: PdfReadingDataDao) : ViewM
                 true
             } catch (e: Exception) {
                 Log.e(LOG_TAG, "-> ${e.message}")
-                if (BuildConfig.DEBUG) e.printStackTrace()
+                e.printStackTrace()
                 false
             }
         }
@@ -68,7 +67,7 @@ class PdfReadingDataViewModel(private val dataSource: PdfReadingDataDao) : ViewM
                 dataSource.getAllPdfReadingData()
             } catch (e: Exception) {
                 Log.e(LOG_TAG, "-> ${e.message}")
-                if (BuildConfig.DEBUG) e.printStackTrace()
+                e.printStackTrace()
                 null
             }
         }
@@ -80,7 +79,7 @@ class PdfReadingDataViewModel(private val dataSource: PdfReadingDataDao) : ViewM
                 dataSource.findPdfReadingDataEntityByBookId(bookId)
             } catch (e: Exception) {
                 Log.e(LOG_TAG, "-> ${e.message}")
-                if (BuildConfig.DEBUG) e.printStackTrace()
+                e.printStackTrace()
                 null
             }
         }
